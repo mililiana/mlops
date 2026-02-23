@@ -56,5 +56,23 @@ To analyze and compare your experiments:
    ```
 2. Open your browser and navigate to: **http://127.0.0.1:5000**
 3. Find the `Tweet_Sentiment_Classification` experiment in the left sidebar.
-4. To find specific models, use search filters (for example, `tags.model_type = "RandomForest"`).
 5. Select multiple runs and click the **Compare** button to view plots showing how the selected metric (e.g., F1) depends on changes in hyperparameters (Parallel Coordinates Plot or Scatter Plot).
+
+## Data Version Control (DVC) Pipeline
+
+This project uses DVC to manage large data files and track the machine learning pipeline (data preparation -> model training). DVC ensures reproducibility of experiments by caching outputs (`dvc.lock`).
+
+### DVC Setup
+The raw dataset is tracked by DVC (and ignored by Git) via the `data/raw/train.csv.dvc` file.
+1. Run `dvc pull` if you have a remote storage configured to fetch the raw data.
+
+### Running the Pipeline
+The entire machine learning pipeline is defined in `dvc.yaml` and is split into two stages:
+1. **prepare**: Cleans `data/raw/train.csv` and outputs `data/prepared/train.csv` (using `src/prepare.py`).
+2. **train**: Trains the model on the prepared data, logs to MLflow, and saves the final model to `models/model.joblib` (using `src/train.py`).
+
+To run the full pipeline seamlessly:
+```bash
+dvc repro
+```
+DVC will intelligently determine which stages need to be re-run based on what data or code has changed since the last execution.
