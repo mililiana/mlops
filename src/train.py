@@ -16,6 +16,7 @@ from sklearn.metrics import (
 )
 import mlflow
 import mlflow.sklearn
+import joblib
 
 
 def get_data_path():
@@ -162,6 +163,9 @@ def main():
         mlflow.log_metric("f1_score_train", f1_train)
 
         mlflow.sklearn.log_model(pipeline, "random_forest_pipeline")
+
+        os.makedirs("models", exist_ok=True)
+        joblib.dump(pipeline, "models/model.joblib")
 
         log_confusion_matrix(y_test, y_pred)
         log_feature_importance(pipeline)
