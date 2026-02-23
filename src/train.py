@@ -21,7 +21,7 @@ import mlflow.sklearn
 def get_data_path():
     current_dir = os.path.dirname(os.path.abspath(__file__))
     project_root = os.path.abspath(os.path.join(current_dir, ".."))
-    data_path = os.path.join(project_root, "data", "raw", "train.csv")
+    data_path = os.path.join(project_root, "data", "prepared", "train.csv")
     return data_path
 
 
@@ -29,13 +29,6 @@ def load_data(data_path):
     if not os.path.exists(data_path):
         raise FileNotFoundError(f"Файл даних не знайдено за шляхом: {data_path}")
     return pd.read_csv(data_path)
-
-
-def preprocess_data(df):
-    df = df.dropna(subset=["tweet", "label"])
-    X = df["tweet"]
-    y = df["label"]
-    return X, y
 
 
 def split_data(X, y, test_size=0.2, random_state=42):
@@ -116,8 +109,8 @@ def main():
     data_path = get_data_path()
     df = load_data(data_path)
 
-    print("2. Передобробка даних...")
-    X, y = preprocess_data(df)
+    print("2. Виділення ознак...")
+    X, y = df["tweet"], df["label"]
 
     print("3. Розділення на тренувальний та тестовий набори...")
     X_train, X_test, y_train, y_test = split_data(X, y)
