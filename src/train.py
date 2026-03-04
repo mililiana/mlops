@@ -17,6 +17,7 @@ from sklearn.metrics import (
 import mlflow
 import mlflow.sklearn
 import joblib
+import json
 
 
 def get_data_path():
@@ -47,7 +48,7 @@ def build_pipeline(tfidf_params, rf_params):
     )
 
 
-def log_confusion_matrix(y_true, y_pred, filename="confusion_matrix.png"):
+def log_confusion_matrix(y_true, y_pred, filename="confusion_metrics.png"):
     cm = confusion_matrix(y_true, y_pred)
     plt.figure(figsize=(8, 6))
     sns.heatmap(cm, annot=True, fmt="d", cmap="Blues")
@@ -59,8 +60,6 @@ def log_confusion_matrix(y_true, y_pred, filename="confusion_matrix.png"):
     plt.close()
 
     mlflow.log_artifact(filename)
-    if os.path.exists(filename):
-        os.remove(filename)
 
 
 def log_feature_importance(pipeline, filename="feature_importance.png"):
@@ -162,10 +161,19 @@ def main():
         mlflow.log_metric("accuracy_train", accuracy_train)
         mlflow.log_metric("f1_score_train", f1_train)
 
+        metrics = {
+            "accuracy": accuracy,
+            "f1_score": f1,
+            "accuracy_train": accuracy_train,
+            "f1_score_train": f1_train,
+        }
+        with open("metrics.json", "w") as f:
+            json.dump(metrics, f, indent=4)
+
         mlflow.sklearn.log_model(pipeline, "random_forest_pipeline")
 
         os.makedirs("models", exist_ok=True)
-        joblib.dump(pipeline, "models/model.joblib")
+        joblib.dump(pipeline, "models/model.pkl")
 
         log_confusion_matrix(y_test, y_pred)
         log_feature_importance(pipeline)

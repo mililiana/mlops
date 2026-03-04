@@ -25,10 +25,18 @@ stages:
       size: 3103165
     - path: src/train.py
       hash: md5
-      md5: fb08416f46ff10aca3126785861cd6dd
-      size: 5751
+      md5: 8e272f88a62a49209fc4f79bedaeb6ce
+      size: 5968
     outs:
-    - path: models/model.joblib
+    - path: confusion_metrics.png
       hash: md5
-      md5: 04c226ddd8b05ccc9e6d483a0f8e1839
+      md5: 22b5747eda780c7af349a75fcc68853e
+      size: 17395
+    - path: metrics.json
+      hash: md5
+      md5: 2714d2df2af624bcb2a29cdc4685140b
+      size: 157
+    - path: models/model.pkl
+      hash: md5
+      md5: c01f6e06d01ca490fa1294077b72e66b
       size: 864901

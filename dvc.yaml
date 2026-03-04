@@ -13,4 +13,8 @@ stages:
       - data/prepared/train.csv
       - src/train.py
     outs:
-      - models/model.joblib
+      - models/model.pkl
+      - confusion_metrics.png
+    metrics:
+      - metrics.json:
+          cache: false
