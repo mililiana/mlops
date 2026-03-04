@@ -1,0 +1,21 @@
+defaults:
+  - model: random_forest
+  - hpo: optuna
+  - _self_
+
+seed: 42
+mlflow:
+  tracking_uri: "sqlite:///mlflow.db"
+  experiment_name: "HPO_Lab3"
+  log_model: true
+  register_model: true
+  model_name: "BestOptimizedModel"
+  stage: "Staging"
+
+data:
+  processed_path: "${hydra:runtime.cwd}/data/prepared/train.csv"
+
+hydra:
+  run:
+    dir: .
+  output_subdir: null

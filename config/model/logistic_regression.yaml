@@ -1,0 +1,6 @@
+type: "logistic_regression"
+C: 
+  low: 1.0e-3
+  high: 1.0e2
+solver: ["liblinear", "lbfgs"]
+penalty: ["l2"]

@@ -123,7 +123,7 @@ def main():
     rf_params = {
         "n_estimators": args.n_estimators,
         "max_depth": args.max_depth,
-        "random_state": 42,
+        "random_state": 12,
         "class_weight": "balanced",
     }
 
